@@ -1,5 +1,8 @@
 package com.goeuro.dev;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 import com.goeuro.dev.api.Api;
@@ -24,19 +27,51 @@ public class GoEuroTest {
 			throw new IllegalArgumentException(usage());
 		}
 		
+		/*
+		 * API gives response for anything rather than empty string.
+		 */
 		String cityName = args[0];
-		if (!cityName.matches("^[a-zA-Z\b]+$")) {
+		if (cityName.equals("")) {
 			throw new IllegalArgumentException(
-					"Invalid city name.\nCity name must match following pattern '^[a-zA-Z\b]+$'.");
+					"Empty string is not valid argument for city name.");
 		}
 		parsedArgs.put(CITY_NAME, cityName);
 		
 		if (args.length > 1) {
 			String outputFile = args[1];
+			
+			/*
+			 * Method will throw IllegalArgumentException if path is not valid
+			 */
+			validateFIlePath(outputFile);
+			
 			parsedArgs.put(OUTPUT_FILE, outputFile);
 		}
 		
 		return parsedArgs;
+	}
+	
+	private static void validateFIlePath(String filepath) throws IllegalArgumentException {
+		FileWriter fw = null;
+		try {
+			File file = new File(filepath);
+			if (!file.exists() && file.getParentFile() != null) {
+				file.getParentFile().mkdirs();
+			}
+			fw = new FileWriter(file);
+		} catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Invalid output file path.");
+		} finally {
+			try {
+				if (fw != null) {
+					fw.close(); 
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public static void main(String[] args) {
