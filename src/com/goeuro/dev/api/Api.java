@@ -42,6 +42,7 @@ public class Api {
 			while ((inputLine = in.readLine()) != null) {
 				sb.append(inputLine);
 			}
+			in.close();
 			
 			conn.disconnect();
 			
