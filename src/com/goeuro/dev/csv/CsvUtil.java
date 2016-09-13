@@ -9,17 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.opencsv.CSVWriter;
 
-public class CsvUtil {
-	public String[] packToCSVRow(String ...values) {
-		String[] csvRow = new String[values.length];
-		
-		for (int i = 0; i < values.length; i++) {
-			csvRow[i] = values[i];
-		}
-		
-		return csvRow;
-	}
-	
+public class CsvUtil {	
 	public CSVWriter getWriter(String filename) throws RuntimeException {
 		try {
 			File file = new File(filename);
@@ -40,7 +30,7 @@ public class CsvUtil {
 			
 			Data data = (Data) cls.newInstance();
 			
-			writer.writeNext(data.getTypes());
+			writer.writeNext(data.getMetada());
 			for (int i = 0; i < array.size(); i++) {
 				JsonObject obj = array.get(i).getAsJsonObject();
 				data.setValues(obj);
