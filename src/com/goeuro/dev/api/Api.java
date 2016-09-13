@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -22,9 +23,9 @@ public class Api {
 	private static final int HTTP_OK = 200;
 	
 	public JsonArray getPositionSuggestion(String cityName) throws RuntimeException {
-		final String urlString = POSITION_SUGGESTION_URL + cityName;
-
 		try {
+			final String urlString = POSITION_SUGGESTION_URL + URLEncoder.encode(cityName, "UTF-8");
+			
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		 	conn.setRequestMethod("GET");
@@ -59,6 +60,6 @@ public class Api {
 	
 	public static void main (String[] args) {
 		Api api = new Api();
-		api.getPositionSuggestion("Berlin");
+		System.out.println(api.getPositionSuggestion("Berlin"));
 	}
 }
