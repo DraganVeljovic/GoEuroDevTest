@@ -25,14 +25,22 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}/lib"/>
 
-    <manifest file="${build}/MANIFEST.MF">
-      <attribute name="Main-Class" value="com.goeuro.dev.GoEuroTest"/>
-    </manifest>
-
     <!-- Put everything in ${build} into the GoEuroDevTest.jar file -->
-    <jar jarfile="${dist}/lib/GoEuroDevTest.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/lib/GoEuroDevTest.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Main-Class" value="com.goeuro.dev.GoEuroTest"/>
+      </manifest>
+    </jar>
+    
+    <!-- Create fat jar with all dependencies: GoEuroDevTest-fat.jar -->
+    <jar destfile="${dist}/lib/GoEuroDevTest-fat.jar"  
+        basedir="${build}">
+      <manifest>
+        <attribute name="Main-Class" value="com.goeuro.dev.GoEuroTest"/>
+      </manifest>  
+        <zipgroupfileset dir="libs" includes="**/*.jar" /> 
+    </jar> 
   </target>
-
   <target name="clean"
         description="clean up">
     <!-- Delete the ${build} and ${dist} directory trees -->
