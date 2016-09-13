@@ -1,0 +1,42 @@
+<project name="GoEuroDevTest" default="dist" basedir=".">
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="bin"/>
+  <property name="dist" location="dist"/>
+
+  <target name="init">
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}">
+      <classpath>
+        <pathelement location="libs/gson-2.3.1.jar"/>
+        <pathelement location="libs/opencsv-3.8.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+    <manifest file="${build}/MANIFEST.MF">
+      <attribute name="Main-Class" value="com.goeuro.dev.GoEuroTest"/>
+    </manifest>
+
+    <!-- Put everything in ${build} into the GoEuroDevTest.jar file -->
+    <jar jarfile="${dist}/lib/GoEuroDevTest.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
